@@ -1,0 +1,5 @@
+{
+  "MsBuild": {
+    "MsBuildSDKsPath": "/usr/local/share/dotnet/sdk/6.0.101/Sdks"
+  }
+}
