@@ -99,11 +99,19 @@ namespace Hangman
             StringBuilder bldr = new StringBuilder(mWord.Length);
             foreach (char c in mWord)
             {
-                CharState charState = mCharStates[GetCharIndex(c)];
-                if (charState == CharState.CorrectlyGuessed)
+                byte charIndex = GetCharIndex(c);
+                if (charIndex == 0xff)
+                {
                     bldr.Append(c);
+                }
                 else
-                    bldr.Append('_');
+                {
+                    CharState charState = mCharStates[charIndex];
+                    if (charState == CharState.CorrectlyGuessed)
+                        bldr.Append(c);
+                    else
+                        bldr.Append('_');
+                }
             }
             return bldr.ToString();
         }

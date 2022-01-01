@@ -11,6 +11,7 @@ namespace Hangman
 
         protected override char GuessCharacter(GameState state)
         {
+            Console.WriteLine();
             Console.Write("Make a guess: ");
             string? line = Console.ReadLine();
             if (line != null && line.Length > 0)

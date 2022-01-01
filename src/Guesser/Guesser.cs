@@ -21,6 +21,8 @@ namespace Hangman
             Console.WriteLine(FormatState(state));
             while (state.Status == GameStatus.Playing)
             {
+                Console.WriteLine();
+                Console.WriteLine("-----------------------------------------------------------");
                 char c = GuessCharacter(state);
                 state = mExecutioner.Guess(c);
                 Console.WriteLine();
@@ -77,7 +79,6 @@ namespace Hangman
                 bldr.AppendLine("Guessed Incorrectly: " + CommaDelimetedChars(state.IncorrectlyGuessed));
             if (state.CorrectlyGuessed.Count > 0)
                 bldr.AppendLine("Guessed Correctly:   " + CommaDelimetedChars(state.CorrectlyGuessed));
-            bldr.AppendLine();
             return bldr.ToString();
         }
 

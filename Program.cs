@@ -6,8 +6,9 @@ namespace Hangman
     {
         static void Main(string[] args)
         {
-            List<string> wordBank = CreateWordBankScript.Run("words_alpha", WordIsValid);
+            List<string> wordBank = CreateWordBankScript.Run("words", WordIsValid);
             Executioner executioner = new Executioner(wordBank);
+            // ManualGuesser guesser = new ManualGuesser(executioner);
             AutoGuesser guesser = new AutoGuesser(executioner, wordBank);
             guesser.Play();
         }
