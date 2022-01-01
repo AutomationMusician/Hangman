@@ -6,10 +6,10 @@ namespace Hangman
     {
         static void Main(string[] args)
         {
-            List<string> wordBank = CreateWordBankScript.Run("1-1000", WordIsValid);
+            List<string> wordBank = CreateWordBankScript.Run("words_alpha", WordIsValid);
             Executioner executioner = new Executioner(wordBank);
-            StdIOHandler handler = new StdIOHandler(executioner);
-            handler.Play();
+            AutoGuesser guesser = new AutoGuesser(executioner, wordBank);
+            guesser.Play();
         }
 
         static bool WordIsValid(string word)

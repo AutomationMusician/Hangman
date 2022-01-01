@@ -14,8 +14,9 @@ namespace Hangman
             List<string> list = new List<string>();
             foreach (string str in array)
             {
-                if (wordIsValid(str))
-                    list.Add(str);
+                string word = str.ToUpper();
+                if (wordIsValid(word))
+                    list.Add(word);
             }
             return list;
         }

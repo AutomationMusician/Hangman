@@ -5,13 +5,15 @@ using System.Text;
 
 namespace Hangman
 {
-    class StdIOHandler
+    abstract class Guesser
     {
-        private Executioner mExecutioner;
-        public StdIOHandler(Executioner executioner)
+        protected Executioner mExecutioner;
+        public Guesser(Executioner executioner)
         {
             this.mExecutioner = executioner;
         }
+
+        abstract protected char GuessCharacter(GameState state);
 
         public void Play()
         {
@@ -19,7 +21,7 @@ namespace Hangman
             Console.WriteLine(FormatState(state));
             while (state.Status == GameStatus.Playing)
             {
-                char c = PromptForChar();
+                char c = GuessCharacter(state);
                 state = mExecutioner.Guess(c);
                 Console.WriteLine();
                 switch (state._GuessResponse)
@@ -52,24 +54,11 @@ namespace Hangman
                 Console.WriteLine();
             }
             else
+            {
                 Console.WriteLine("YOU LOSE.");
                 Console.WriteLine("The word was '" + state.CensoredWord + "'");
                 Console.WriteLine();
-        }
-
-        private char PromptForChar()
-        {
-            Console.Write("Make a guess: ");
-            string? line = Console.ReadLine();
-            if (line != null && line.Length > 0)
-            {
-                char c = line[0];
-                if (c >= 'a' && c <= 'z')
-                    return (char)(c - 'a' + 'A');
-                return c;
             }
-            else
-                return '\0';
         }
 
         private string FormatState(GameState state)
