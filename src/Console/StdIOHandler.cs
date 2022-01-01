@@ -40,12 +40,21 @@ namespace Hangman
                         Console.WriteLine("'" + c + "' is not in the word.");
                         break;
                 }
-                Console.WriteLine(FormatState(state));
+                if (state.Status == GameStatus.Playing)
+                    Console.WriteLine(FormatState(state));
+                else
+                    Console.WriteLine();
             }
             if (state.Status == GameStatus.Won)
+            {
                 Console.WriteLine("YOU WIN!");
+                Console.WriteLine("The word was '" + state.CensoredWord + "'");
+                Console.WriteLine();
+            }
             else
                 Console.WriteLine("YOU LOSE.");
+                Console.WriteLine("The word was '" + state.CensoredWord + "'");
+                Console.WriteLine();
         }
 
         private char PromptForChar()
@@ -53,7 +62,12 @@ namespace Hangman
             Console.Write("Make a guess: ");
             string? line = Console.ReadLine();
             if (line != null && line.Length > 0)
-                return line[0];
+            {
+                char c = line[0];
+                if (c >= 'a' && c <= 'z')
+                    return (char)(c - 'a' + 'A');
+                return c;
+            }
             else
                 return '\0';
         }
@@ -61,7 +75,13 @@ namespace Hangman
         private string FormatState(GameState state)
         {
             StringBuilder bldr = new StringBuilder();
-            bldr.AppendLine(state.CensoredWord);
+            foreach (char c in state.CensoredWord)
+            {
+                bldr.Append(c);
+                bldr.Append(' ');
+            }
+            bldr.Remove(bldr.Length - 1, 1); // Remove final space
+            bldr.AppendLine();
             bldr.AppendLine();
             bldr.AppendLine("Guesses Left: " + state.GuessesLeft);
             if (state.IncorrectlyGuessed.Count > 0)

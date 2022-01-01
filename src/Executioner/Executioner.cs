@@ -7,22 +7,17 @@ namespace Hangman
 {
     class Executioner
     {
-        public const int GUESS_LIMIT = 8;
-        private int mGuessesLeft = GUESS_LIMIT;
+        public const int DEFAULT_GUESS_LIMIT = 8;
+        private int mGuessesLeft;
         private string mWord;
         private GameStatus mPrevGameStatus = GameStatus.Playing;
         private CharState[] mCharStates = new CharState[26];
 
-        public Executioner(string dictionary) {
-            string[] words = File.ReadAllLines("data/" + dictionary + ".txt");
+        public Executioner(List<string> wordBank, int guessLimit = DEFAULT_GUESS_LIMIT) {
+            mGuessesLeft = guessLimit;
             Random r = new Random();
-            do {
-                int index = r.Next(words.Length);
-                mWord = words[index].ToUpper();
-            } while (mWord.Length < 6);
-
-            // mWord = "ABCDEFG";
-            // Console.WriteLine(mWord);
+            int index = r.Next(wordBank.Count);
+            mWord = wordBank[index].ToUpper();
         }
 
         public GameState GetGameState()
@@ -41,6 +36,8 @@ namespace Hangman
                 List<char>[] guessCharLists = GetGuessedCharLists();
                 string censoredWord = GetCensoredWord();
                 GameStatus gameStatus = GetGameStatus(censoredWord);
+                if (gameStatus != GameStatus.Playing)
+                    censoredWord = mWord;
                 mPrevGameStatus = gameStatus;
                 return new GameState(gameStatus, guessResponse, mGuessesLeft, censoredWord, guessCharLists[0], guessCharLists[1]);
             }
@@ -107,9 +104,7 @@ namespace Hangman
                     bldr.Append(c);
                 else
                     bldr.Append('_');
-                bldr.Append(' ');
             }
-            bldr.Remove(bldr.Length - 1, 1);
             return bldr.ToString();
         }
 
